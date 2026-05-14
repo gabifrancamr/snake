@@ -45,6 +45,7 @@ public class Snake : MonoBehaviour
         EatFood();
 
         CheckWallCollioson();
+        CheckBodyCollision();
     }
 
     void ChangeDirection()
@@ -147,6 +148,21 @@ public class Snake : MonoBehaviour
         for(int i = 0; i < wall.Count; ++i)
         {
             Vector2 index = wall[i].position / cellSize;
+            if(Mathf.Abs(index.x - snakeIndex.x) < 0.00001f && Mathf.Abs(index.y - snakeIndex.y) < 0.00001f)
+            {
+                GameOver();
+                break;
+            }
+        }
+    }
+
+    void CheckBodyCollision()
+    {
+        if (body.Count < 3) return;
+
+        for(int i = 0; i < body.Count; ++i)
+        {
+            Vector2 index = body[i].position / cellSize;
             if(Mathf.Abs(index.x - snakeIndex.x) < 0.00001f && Mathf.Abs(index.y - snakeIndex.y) < 0.00001f)
             {
                 GameOver();
