@@ -5,9 +5,11 @@ public class Snake : MonoBehaviour
 {
     public Transform foodPrefab;
     public Transform bodyPrefab;
+    public Transform wallPrefab; 
 
     List<Transform> food = new List<Transform>();
     List<Transform> body = new List<Transform>();
+    List<Transform> wall = new List<Transform>();
 
     Vector2 direction = Vector3.up;
     public float cellSize = 0.3f;
@@ -21,6 +23,7 @@ public class Snake : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        CreateWalls();
         for (int i = 0; i < initialFoods; i++) SpawnFood();
     }
 
@@ -100,5 +103,32 @@ public class Snake : MonoBehaviour
         float y = Random.Range(-13, 11) * cellSize;
         Vector2 randomPosition = new Vector2(x, y);
         food.Add(Instantiate(foodPrefab, randomPosition, Quaternion.identity).transform);
+    }
+
+    void CreateWalls()
+    {
+        //baseado no tamanho da tela
+        int cellX = -24;
+        int cellY = -11;
+        int height = 25;
+
+        float horizontal = cellX * cellSize;
+        float vertical = cellY * cellSize;
+
+        for(int i = 0; i < (int)Mathf.Abs((horizontal * 2) / cellSize)+1; ++i)
+        {
+            Vector2 top = new Vector3(horizontal + cellSize * i, vertical);
+            Vector2 bottom = new Vector3(horizontal + cellSize * i, vertical - height * cellSize);
+            wall.Add(Instantiate(wallPrefab, top, Quaternion.identity).transform);
+            wall.Add(Instantiate(wallPrefab, bottom, Quaternion.identity).transform);
+        }
+
+        for (int i = 0; i < height; ++i)
+        {
+            Vector2 right = new Vector3(horizontal, vertical - cellSize * i);
+            Vector2 left = new Vector3(-horizontal, vertical - cellSize * i);
+            wall.Add(Instantiate(wallPrefab, right, Quaternion.identity).transform);
+            wall.Add(Instantiate(wallPrefab, left, Quaternion.identity).transform);
+        }
     }
 }
