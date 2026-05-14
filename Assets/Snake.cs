@@ -20,6 +20,8 @@ public class Snake : MonoBehaviour
     float moveTime = 0;
     Vector2 snakeIndex;
 
+    bool gameOver = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,11 +32,18 @@ public class Snake : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(gameOver)
+        {
+            return;
+        }
+
         ChangeDirection();
 
         Move();
 
         EatFood();
+
+        CheckWallCollioson();
     }
 
     void ChangeDirection()
@@ -109,7 +118,7 @@ public class Snake : MonoBehaviour
     {
         //baseado no tamanho da tela
         int cellX = -24;
-        int cellY = -11;
+        int cellY = 11;
         int height = 25;
 
         float horizontal = cellX * cellSize;
@@ -130,5 +139,23 @@ public class Snake : MonoBehaviour
             wall.Add(Instantiate(wallPrefab, right, Quaternion.identity).transform);
             wall.Add(Instantiate(wallPrefab, left, Quaternion.identity).transform);
         }
+    }
+
+    void CheckWallCollioson()
+    {
+        for(int i = 0; i < wall.Count; ++i)
+        {
+            Vector2 index = wall[i].position / cellSize;
+            if(Mathf.Abs(index.x - snakeIndex.x) < 0.00001f && Mathf.Abs(index.y - snakeIndex.y) < 0.00001f)
+            {
+                GameOver();
+                break;
+            }
+        }
+    }
+
+    void GameOver()
+    {
+        gameOver = true;
     }
 }
