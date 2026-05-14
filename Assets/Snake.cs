@@ -34,6 +34,7 @@ public class Snake : MonoBehaviour
     {
         if(gameOver)
         {
+            if(Input.GetKeyDown(KeyCode.R)) Restart();
             return;
         }
 
@@ -157,5 +158,32 @@ public class Snake : MonoBehaviour
     void GameOver()
     {
         gameOver = true;
+    }
+
+    void Restart()
+    {
+        gameOver = false;
+
+        // Remove corpo
+        for (int i = 0; i < body.Count; ++i)
+        {
+            Destroy(body[i].gameObject);
+        }
+        body.Clear();
+
+        // Remove comidas
+        for (int i = 0; i < food.Count; ++i)
+        {
+            Destroy(food[i].gameObject);
+        }
+        food.Clear();
+
+        // Reset posição e direção
+        transform.position = Vector3.zero;
+
+        for (int i = 0; i < initialFoods; i++)
+        {
+            SpawnFood();
+        }
     }
 }
