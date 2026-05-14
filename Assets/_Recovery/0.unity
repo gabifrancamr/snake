@@ -224,9 +224,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Snake
   foodPrefab: {fileID: 6585612347994675747, guid: 406702e8bef6d76408fa65ac7c7a6afb, type: 3}
-  bodyPrefab: {fileID: 1854594617356522413, guid: 2a56f39d4da6d4a4f876525b78c223a9, type: 3}
   cellSize: 0.3
-  speed: 10
+  speed: 0.5
   initialFoods: 10
 --- !u!1 &519420028
 GameObject:

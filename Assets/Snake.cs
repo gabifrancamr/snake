@@ -4,7 +4,10 @@ using UnityEngine;
 public class Snake : MonoBehaviour
 {
     public Transform foodPrefab;
+    public Transform bodyPrefab;
+
     List<Transform> food = new List<Transform>();
+    List<Transform> body = new List<Transform>();
 
     Vector2 direction = Vector3.up;
     public float cellSize = 0.3f;
@@ -54,10 +57,27 @@ public class Snake : MonoBehaviour
     {
         if(Time.time > moveTime)
         {
+            for(int i = body.Count - 1; i > 0; i--)
+            {
+                body[i].position = body[i - 1].position;
+            }
+
+            if (body.Count > 0)
+                body[0].position = (Vector2)transform.position; //passa posição da cabeça para primeiro elemento da lista
+
             transform.position += (Vector3)direction * cellSize;
             moveTime = Time.time + 1 / speed;
             snakeIndex = transform.position / cellSize;
         }
+    }
+
+    void GrowBody()
+    {
+        Vector2 position = transform.position;
+
+        if(body.Count != 0)
+            position = body[body.Count - 1].position;
+        body.Add(Instantiate(bodyPrefab, position, Quaternion.identity).transform);
     }
 
     void EatFood()
@@ -69,6 +89,7 @@ public class Snake : MonoBehaviour
             {
                 Destroy(food[i].gameObject);
                 food.Remove(food[i]);
+                GrowBody();
             }
         }
     }
