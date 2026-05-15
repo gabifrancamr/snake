@@ -1,11 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Snake : MonoBehaviour
 {
     public Transform foodPrefab;
     public Transform bodyPrefab;
     public Transform wallPrefab;
+
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI highScoreText;
+    public TextMeshProUGUI gameOverText;
 
     List<Transform> food = new List<Transform>();
     List<Transform> body = new List<Transform>();
@@ -22,11 +27,17 @@ public class Snake : MonoBehaviour
 
     bool gameOver = false;
 
+    int score = 0;
+    int highScore = 0;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         CreateWalls();
         for (int i = 0; i < initialFoods; i++) SpawnFood();
+
+        scoreText.text = "SCORE: 0";
+        highScoreText.text = "HIGH SCORE: 0";
     }
 
     // Update is called once per frame
@@ -107,6 +118,10 @@ public class Snake : MonoBehaviour
                 Destroy(food[i].gameObject);
                 food.RemoveAt(i);
                 GrowBody();
+
+                score++;
+                scoreText.text = "SCORE: " + score;
+
                 SpawnFood();
 
                 break;
@@ -180,11 +195,25 @@ public class Snake : MonoBehaviour
     void GameOver()
     {
         gameOver = true;
+
+        gameOverText.enabled = true;
+
+        if (score > highScore)
+        {
+            highScore = score;
+        }
+
+        highScoreText.text = "HIGH SCORE: " + highScore;
     }
 
     void Restart()
     {
         gameOver = false;
+
+        gameOverText.enabled = false;
+
+        score = 0;
+        scoreText.text = "SCORE: 0";
 
         // Remove corpo
         for (int i = 0; i < body.Count; ++i)
@@ -202,6 +231,8 @@ public class Snake : MonoBehaviour
 
         // Reset posição e direção
         transform.position = Vector3.zero;
+
+        direction = Vector2.up;
 
         for (int i = 0; i < initialFoods; i++)
         {
