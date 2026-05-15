@@ -1,11 +1,16 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
     public Transform foodPrefab;
     public Transform bodyPrefab;
-    public Transform wallPrefab; 
+    public Transform wallPrefab;
+
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI highScoreText;
+    public TextMeshProUGUI gameOverText;
 
     List<Transform> food = new List<Transform>();
     List<Transform> body = new List<Transform>();
@@ -17,6 +22,9 @@ public class Snake : MonoBehaviour
 
     public int initialFoods = 10;
 
+    int score = 0;
+    int highScore = 0;
+
     float moveTime = 0;
     Vector2 snakeIndex;
 
@@ -27,6 +35,8 @@ public class Snake : MonoBehaviour
     {
         CreateWalls();
         for (int i = 0; i < initialFoods; i++) SpawnFood();
+
+        gameOverText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -104,6 +114,9 @@ public class Snake : MonoBehaviour
                 Destroy(food[i].gameObject);
                 food.Remove(food[i]);
                 GrowBody();
+                score++;
+                scoreText.text = "SCORE: " + score.ToString();
+                SpawnFood(); // sempre que a snake comer uma comida tem que nascer outra no lugar
             }
         }
     }
@@ -174,11 +187,18 @@ public class Snake : MonoBehaviour
     void GameOver()
     {
         gameOver = true;
+        gameOverText.gameObject.SetActive(true);
     }
 
     void Restart()
     {
         gameOver = false;
+        gameOverText.gameObject.SetActive(false);
+
+        if (score > highScore) highScore = score;
+        highScoreText.text = "HIGH SCORE: " + highScore.ToString();
+        score = 0;
+        scoreText.text = "SCORE: " + score.ToString();
 
         // Remove corpo
         for (int i = 0; i < body.Count; ++i)
