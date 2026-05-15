@@ -18,7 +18,8 @@ public class Snake : MonoBehaviour
 
     Vector2 direction = Vector3.up;
     public float cellSize = 0.3f;
-    public float speed = 10.0f; //Cells per second
+    public float speed = 5.0f; //Cells per second
+    float initialSpeed;
 
     public int initialFoods = 1;
 
@@ -35,6 +36,7 @@ public class Snake : MonoBehaviour
     {
         CreateWalls();
         for (int i = 0; i < initialFoods; i++) SpawnFood();
+        initialSpeed = speed;
 
         scoreText.text = "SCORE: 0";
         highScoreText.text = "HIGH SCORE: 0";
@@ -123,6 +125,7 @@ public class Snake : MonoBehaviour
                 GrowBody();
 
                 score++;
+                speed += 0.5f;
                 scoreText.text = "SCORE: " + score;
 
                 SpawnFood();
@@ -214,6 +217,8 @@ public class Snake : MonoBehaviour
         gameOver = false;
 
         gameOverText.enabled = false;
+
+        speed = initialSpeed;
 
         score = 0;
         scoreText.text = "SCORE: 0";

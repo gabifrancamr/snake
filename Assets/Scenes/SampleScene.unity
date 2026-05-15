@@ -230,7 +230,7 @@ MonoBehaviour:
   highScoreText: {fileID: 983378774}
   gameOverText: {fileID: 1551994016}
   cellSize: 0.3
-  speed: 10
+  speed: 5
   initialFoods: 1
 --- !u!1 &373496044
 GameObject:
