@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class Snake : MonoBehaviour
@@ -7,10 +6,6 @@ public class Snake : MonoBehaviour
     public Transform foodPrefab;
     public Transform bodyPrefab;
     public Transform wallPrefab;
-
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI highScoreText;
-    public TextMeshProUGUI gameOverText;
 
     List<Transform> food = new List<Transform>();
     List<Transform> body = new List<Transform>();
@@ -20,10 +15,7 @@ public class Snake : MonoBehaviour
     public float cellSize = 0.3f;
     public float speed = 10.0f; //Cells per second
 
-    public int initialFoods = 10;
-
-    int score = 0;
-    int highScore = 0;
+    public int initialFoods = 1;
 
     float moveTime = 0;
     Vector2 snakeIndex;
@@ -35,16 +27,14 @@ public class Snake : MonoBehaviour
     {
         CreateWalls();
         for (int i = 0; i < initialFoods; i++) SpawnFood();
-
-        gameOverText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(gameOver)
+        if (gameOver)
         {
-            if(Input.GetKeyDown(KeyCode.R)) Restart();
+            if (Input.GetKeyDown(KeyCode.R)) Restart();
             return;
         }
 
@@ -62,16 +52,19 @@ public class Snake : MonoBehaviour
     {
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        if(input.y == -1)
+        if (input.y == -1)
         {
             direction = Vector2.down;
-        } else if(input.y == 1)
+        }
+        else if (input.y == 1)
         {
             direction = Vector2.up;
-        } else if(input.x == -1)
+        }
+        else if (input.x == -1)
         {
             direction = Vector2.left;
-        } else if(input.x == 1)
+        }
+        else if (input.x == 1)
         {
             direction = Vector2.right;
         }
@@ -79,9 +72,9 @@ public class Snake : MonoBehaviour
 
     void Move()
     {
-        if(Time.time > moveTime)
+        if (Time.time > moveTime)
         {
-            for(int i = body.Count - 1; i > 0; i--)
+            for (int i = body.Count - 1; i > 0; i--)
             {
                 body[i].position = body[i - 1].position;
             }
@@ -99,7 +92,7 @@ public class Snake : MonoBehaviour
     {
         Vector2 position = transform.position;
 
-        if(body.Count != 0)
+        if (body.Count != 0)
             position = body[body.Count - 1].position;
         body.Add(Instantiate(bodyPrefab, position, Quaternion.identity).transform);
     }
@@ -112,11 +105,11 @@ public class Snake : MonoBehaviour
             if (Mathf.Abs(foodIndex.x - snakeIndex.x) < 0.00001f && Mathf.Abs(foodIndex.y - snakeIndex.y) < 0.00001f)
             {
                 Destroy(food[i].gameObject);
-                food.Remove(food[i]);
+                food.RemoveAt(i);
                 GrowBody();
-                score++;
-                scoreText.text = "SCORE: " + score.ToString();
-                SpawnFood(); // sempre que a snake comer uma comida tem que nascer outra no lugar
+                SpawnFood();
+
+                break;
             }
         }
     }
@@ -139,7 +132,7 @@ public class Snake : MonoBehaviour
         float horizontal = cellX * cellSize;
         float vertical = cellY * cellSize;
 
-        for(int i = 0; i < (int)Mathf.Abs((horizontal * 2) / cellSize)+1; ++i)
+        for (int i = 0; i < (int)Mathf.Abs((horizontal * 2) / cellSize) + 1; ++i)
         {
             Vector2 top = new Vector3(horizontal + cellSize * i, vertical);
             Vector2 bottom = new Vector3(horizontal + cellSize * i, vertical - height * cellSize);
@@ -158,10 +151,10 @@ public class Snake : MonoBehaviour
 
     void CheckWallCollioson()
     {
-        for(int i = 0; i < wall.Count; ++i)
+        for (int i = 0; i < wall.Count; ++i)
         {
             Vector2 index = wall[i].position / cellSize;
-            if(Mathf.Abs(index.x - snakeIndex.x) < 0.00001f && Mathf.Abs(index.y - snakeIndex.y) < 0.00001f)
+            if (Mathf.Abs(index.x - snakeIndex.x) < 0.00001f && Mathf.Abs(index.y - snakeIndex.y) < 0.00001f)
             {
                 GameOver();
                 break;
@@ -173,10 +166,10 @@ public class Snake : MonoBehaviour
     {
         if (body.Count < 3) return;
 
-        for(int i = 0; i < body.Count; ++i)
+        for (int i = 0; i < body.Count; ++i)
         {
             Vector2 index = body[i].position / cellSize;
-            if(Mathf.Abs(index.x - snakeIndex.x) < 0.00001f && Mathf.Abs(index.y - snakeIndex.y) < 0.00001f)
+            if (Mathf.Abs(index.x - snakeIndex.x) < 0.00001f && Mathf.Abs(index.y - snakeIndex.y) < 0.00001f)
             {
                 GameOver();
                 break;
@@ -187,18 +180,11 @@ public class Snake : MonoBehaviour
     void GameOver()
     {
         gameOver = true;
-        gameOverText.gameObject.SetActive(true);
     }
 
     void Restart()
     {
         gameOver = false;
-        gameOverText.gameObject.SetActive(false);
-
-        if (score > highScore) highScore = score;
-        highScoreText.text = "HIGH SCORE: " + highScore.ToString();
-        score = 0;
-        scoreText.text = "SCORE: " + score.ToString();
 
         // Remove corpo
         for (int i = 0; i < body.Count; ++i)
