@@ -61,21 +61,24 @@ public class Snake : MonoBehaviour
 
     void ChangeDirection()
     {
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 input = new Vector2(
+            Input.GetAxisRaw("Horizontal"),
+            Input.GetAxisRaw("Vertical")
+        );
 
-        if (input.y == -1)
-        {
-            direction = Vector2.down;
-        }
-        else if (input.y == 1)
+        if (input.y == 1 && direction != Vector2.down)
         {
             direction = Vector2.up;
         }
-        else if (input.x == -1)
+        else if (input.y == -1 && direction != Vector2.up)
+        {
+            direction = Vector2.down;
+        }
+        else if (input.x == -1 && direction != Vector2.right)
         {
             direction = Vector2.left;
         }
-        else if (input.x == 1)
+        else if (input.x == 1 && direction != Vector2.left)
         {
             direction = Vector2.right;
         }
