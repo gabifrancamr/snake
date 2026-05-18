@@ -1,19 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 
-public class Snake : MonoBehaviour
+public class SnakeController : MonoBehaviour
 {
+    public UIManager uiManager;
+
     public Transform foodPrefab;
     public Transform bodyPrefab;
     public Transform wallPrefab;
-
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI highScoreText;
-    public TextMeshProUGUI gameOverText;
-
-    public GameObject restartButton;
 
     List<Transform> food = new List<Transform>();
     List<Transform> body = new List<Transform>();
@@ -41,10 +35,9 @@ public class Snake : MonoBehaviour
         for (int i = 0; i < initialFoods; i++) SpawnFood();
         initialSpeed = speed;
 
-        gameOverText.enabled = false;
-        restartButton.SetActive(false);
-        scoreText.text = "SCORE: 0";
-        highScoreText.text = "HIGH SCORE: 0";
+        uiManager.UpdateScore(0);
+        uiManager.UpdateHighScore(highScore);
+        uiManager.HideGameOver();
     }
 
     // Update is called once per frame
@@ -131,7 +124,8 @@ public class Snake : MonoBehaviour
 
                 score++;
                 speed += 0.5f;
-                scoreText.text = "SCORE: " + score;
+
+                uiManager.UpdateScore(score);
 
                 SpawnFood();
 
@@ -207,28 +201,26 @@ public class Snake : MonoBehaviour
     {
         gameOver = true;
 
-        gameOverText.enabled = true;
-        restartButton.SetActive(true);
+        uiManager.ShowGameOver();
 
         if (score > highScore)
         {
             highScore = score;
         }
 
-        highScoreText.text = "HIGH SCORE: " + highScore;
+        uiManager.UpdateHighScore(highScore);
     }
 
     public void Restart()
     {
         gameOver = false;
 
-        gameOverText.enabled = false;
-        restartButton.SetActive(false);
+        uiManager.HideGameOver();
 
         speed = initialSpeed;
 
         score = 0;
-        scoreText.text = "SCORE: 0";
+        uiManager.UpdateScore(0);
 
         // Remove corpo
         for (int i = 0; i < body.Count; ++i)
