@@ -130,6 +130,8 @@ GameObject:
   - component: {fileID: 70842309}
   - component: {fileID: 70842308}
   - component: {fileID: 70842310}
+  - component: {fileID: 70842312}
+  - component: {fileID: 70842311}
   m_Layer: 0
   m_Name: Snake
   m_TagString: Untagged
@@ -223,12 +225,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3bb9ff2eac28a498705e9b49f0eae1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Snake
-  wallGenerator: {fileID: 363547296}
-  foodSpawner: {fileID: 2075544775}
-  gameManager: {fileID: 239206539}
   bodyPrefab: {fileID: 8960439344397726205, guid: 824305533bcf48e4288f80142694cb63, type: 3}
-  cellSize: 0.3
-  speed: 5
+--- !u!50 &70842311
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70842307}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!61 &70842312
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 70842307}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &239206538
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,9 +328,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f6307ed37489004ca3c2424c50079d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  cellSize: 0.3
+  initialSpeed: 5
+  currentSpeed: 0
   uiManager: {fileID: 1120472875}
   snakeController: {fileID: 70842310}
   foodSpawner: {fileID: 2075544775}
+  wallGenerator: {fileID: 363547296}
 --- !u!4 &239206540
 Transform:
   m_ObjectHideFlags: 0
@@ -307,7 +381,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallGenerator
   wallPrefab: {fileID: 2037745356473792681, guid: 5ec3e46503836e247b87dbc6ae113401, type: 3}
-  cellSize: 0.3
 --- !u!212 &363547297
 SpriteRenderer:
   serializedVersion: 2
@@ -1484,7 +1557,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FoodSpawner
   foodPrefab: {fileID: 3266197994856377315, guid: bb8d6c4119b0ffc47a3d4b1af7d8832f, type: 3}
-  cellSize: 0.3
   initialFoods: 1
 --- !u!212 &2075544776
 SpriteRenderer:

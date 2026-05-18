@@ -3,180 +3,98 @@ using UnityEngine;
 
 public class SnakeController : MonoBehaviour
 {
-    public WallGenerator wallGenerator;
-    public FoodSpawner foodSpawner;
-    public GameManager gameManager;
-
     public Transform bodyPrefab;
+    private List<Transform> body = new List<Transform>();
 
-    List<Transform> body = new List<Transform>();
+    private Vector2 direction = Vector2.up;
+    private float moveTime = 0;
 
-    Vector2 direction = Vector3.up;
-    public float cellSize = 0.3f;
-    public float speed = 5.0f; //Cells per second
-    float initialSpeed;
-
-    float moveTime = 0;
-    Vector2 snakeIndex;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        // Garante que os spawners usem exatamente o mesmo cellSize da cobra
-        if (wallGenerator != null) wallGenerator.cellSize = this.cellSize;
-        if (foodSpawner != null) foodSpawner.cellSize = this.cellSize;
-
-        wallGenerator.CreateWalls();
-
-        foodSpawner.SpawnInitialFood();
-
-        initialSpeed = speed;
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if (gameManager.IsGameOver())
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                gameManager.RestartGame();
-            }
-
-            return;
-        }
+        if (GameManager.Instance.IsGameOver()) return;
 
         ChangeDirection();
-
         Move();
-
-        EatFood();
-
-        CheckWallCollision();
-        CheckBodyCollision();
     }
 
     void ChangeDirection()
     {
-        Vector2 input = new Vector2(
-            Input.GetAxisRaw("Horizontal"),
-            Input.GetAxisRaw("Vertical")
-        );
+        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        if (input.y == 1 && direction != Vector2.down)
-        {
-            direction = Vector2.up;
-        }
-        else if (input.y == -1 && direction != Vector2.up)
-        {
-            direction = Vector2.down;
-        }
-        else if (input.x == -1 && direction != Vector2.right)
-        {
-            direction = Vector2.left;
-        }
-        else if (input.x == 1 && direction != Vector2.left)
-        {
-            direction = Vector2.right;
-        }
+        if (input.y == 1 && direction != Vector2.down) direction = Vector2.up;
+        else if (input.y == -1 && direction != Vector2.up) direction = Vector2.down;
+        else if (input.x == -1 && direction != Vector2.right) direction = Vector2.left;
+        else if (input.x == 1 && direction != Vector2.left) direction = Vector2.right;
     }
 
     void Move()
     {
         if (Time.time > moveTime)
         {
+            float cellSize = GameManager.Instance.cellSize;
+            float speed = GameManager.Instance.currentSpeed;
+
+            // Move o corpo de trás para frente
             for (int i = body.Count - 1; i > 0; i--)
             {
                 body[i].position = body[i - 1].position;
             }
 
             if (body.Count > 0)
-                body[0].position = (Vector2)transform.position; //passa posição da cabeça para primeiro elemento da lista
+            {
+                body[0].position = (Vector2)transform.position;
+            }
 
             transform.position += (Vector3)direction * cellSize;
-            moveTime = Time.time + 1 / speed;
-            snakeIndex = transform.position / cellSize;
+            moveTime = Time.time + 1f / speed;
         }
     }
 
-    void GrowBody()
+    public void GrowBody()
     {
         Vector2 position = transform.position;
-
         if (body.Count != 0)
+        {
             position = body[body.Count - 1].position;
+        }
+
         body.Add(Instantiate(bodyPrefab, position, Quaternion.identity).transform);
     }
 
-    void EatFood()
+    // A Mágica da Unity: Substitui todas as checagens manuais de listas!
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        List<Transform> foods = foodSpawner.GetFoods();
 
-        for (int i = 0; i < foods.Count; ++i)
+        if (collision.CompareTag("Food"))
         {
-            if (foods[i] == null) continue; // Proteção contra referências nulas
-
-            Vector2 foodIndex = foods[i].position / cellSize;
-            if (Mathf.Abs(foodIndex.x - snakeIndex.x) < 0.00001f && Mathf.Abs(foodIndex.y - snakeIndex.y) < 0.00001f)
-            {
-                foodSpawner.RemoveFood(i);
-                GrowBody();
-
-                speed += 0.5f;
-                gameManager.AddScore();
-                foodSpawner.SpawnFood();
-                break;
-            }
+            GrowBody();
+            GameManager.Instance.OnFoodEaten(collision.gameObject);
         }
-    }
-
-    void CheckWallCollision()
-    {
-        List<Transform> walls = wallGenerator.GetWalls();
-
-        for (int i = 0; i < walls.Count; ++i)
+        else if (collision.CompareTag("Wall"))
         {
-            Vector2 index = walls[i].position / cellSize;
-
-            if (
-                Mathf.Abs(index.x - snakeIndex.x) < 0.00001f &&
-                Mathf.Abs(index.y - snakeIndex.y) < 0.00001f
-            )
-            {
-                gameManager.GameOver();
-                break;
-            }
+            GameManager.Instance.GameOver();
         }
-    }
-
-    void CheckBodyCollision()
-    {
-        if (body.Count < 3) return;
-
-        for (int i = 0; i < body.Count; ++i)
+        else if (collision.CompareTag("Body"))
         {
-            Vector2 index = body[i].position / cellSize;
-            if (Mathf.Abs(index.x - snakeIndex.x) < 0.00001f && Mathf.Abs(index.y - snakeIndex.y) < 0.00001f)
+            // SÓ DÁ GAME OVER SE A COBRA JÁ TIVER UM CORPO CONSIDERÁVEL
+            // Se ela acabou de começar ou só tem 1 ou 2 gomos, ignora a colisão imediata
+            if (body.Count > 2)
             {
-                gameManager.GameOver();
-                break;
+                GameManager.Instance.GameOver();
             }
         }
     }
 
     public void ResetSnake()
     {
-        speed = initialSpeed;
-
         for (int i = 0; i < body.Count; ++i)
         {
             Destroy(body[i].gameObject);
         }
-
         body.Clear();
 
         transform.position = Vector3.zero;
-
         direction = Vector2.up;
+        moveTime = 0;
     }
 }

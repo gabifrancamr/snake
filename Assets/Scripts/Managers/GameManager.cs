@@ -2,62 +2,80 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public UIManager uiManager;
+    public static GameManager Instance { get; private set; }
 
+    [Header("Global Settings")]
+    public float cellSize = 0.3f;
+    public float initialSpeed = 5.0f;
+    [HideInInspector] public float currentSpeed;
+
+    [Header("References")]
+    public UIManager uiManager;
     public SnakeController snakeController;
     public FoodSpawner foodSpawner;
+    public WallGenerator wallGenerator;
 
-    int score = 0;
-    int highScore = 0;
+    private int score = 0;
+    private int highScore = 0;
+    private bool gameOver = false;
 
-    bool gameOver = false;
+    public bool IsGameOver() => gameOver;
 
-    public bool IsGameOver()
+    void Awake()
     {
-        return gameOver;
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     void Start()
     {
+        currentSpeed = initialSpeed;
+        wallGenerator.CreateWalls(cellSize);
+        foodSpawner.SpawnInitialFood(cellSize);
+
         uiManager.UpdateScore(0);
         uiManager.UpdateHighScore(highScore);
         uiManager.HideGameOver();
     }
 
-    public void AddScore()
+    private void Update()
     {
+        if (gameOver && Input.GetKeyDown(KeyCode.R))
+        {
+            RestartGame();
+        }
+    }
+
+    public void OnFoodEaten(GameObject foodObject)
+    {
+        foodSpawner.RemoveFood(foodObject);
         score++;
+        currentSpeed += 0.5f;
 
         uiManager.UpdateScore(score);
+        foodSpawner.SpawnFood(cellSize);
     }
 
     public void GameOver()
     {
         gameOver = true;
-
         uiManager.ShowGameOver();
 
-        if (score > highScore)
-        {
-            highScore = score;
-        }
-
+        if (score > highScore) highScore = score;
         uiManager.UpdateHighScore(highScore);
     }
 
     public void RestartGame()
     {
         gameOver = false;
+        score = 0;
+        currentSpeed = initialSpeed;
 
         uiManager.HideGameOver();
-
-        score = 0;
-
         uiManager.UpdateScore(0);
 
         snakeController.ResetSnake();
-
         foodSpawner.ClearFoods();
-        foodSpawner.SpawnInitialFood();
+        foodSpawner.SpawnInitialFood(cellSize);
     }
 }

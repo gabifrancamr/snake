@@ -4,53 +4,40 @@ using UnityEngine;
 public class FoodSpawner : MonoBehaviour
 {
     public Transform foodPrefab;
-
-    public float cellSize = 0.3f;
-
     public int initialFoods = 1;
+    private List<GameObject> foods = new List<GameObject>();
 
-    List<Transform> foods = new List<Transform>();
-
-    public void SpawnInitialFood()
+    public void SpawnInitialFood(float cellSize)
     {
         for (int i = 0; i < initialFoods; i++)
         {
-            SpawnFood();
+            SpawnFood(cellSize);
         }
     }
 
-    public void SpawnFood()
+    public void SpawnFood(float cellSize)
     {
         float x = Random.Range(-23, 23) * cellSize;
         float y = Random.Range(-13, 11) * cellSize;
 
-        Vector2 randomPosition = new Vector2(x, y);
-
-        foods.Add(
-            Instantiate(foodPrefab, randomPosition, Quaternion.identity).transform
-        );
+        GameObject newFood = Instantiate(foodPrefab, new Vector2(x, y), Quaternion.identity).gameObject;
+        foods.Add(newFood);
     }
 
-    public List<Transform> GetFoods()
+    public void RemoveFood(GameObject foodObject)
     {
-        return foods;
-    }
-
-    public void RemoveFood(int index)
-    {
-        Destroy(foods[index].gameObject);
-        foods.RemoveAt(index);
+        if (foods.Contains(foodObject))
+        {
+            foods.Remove(foodObject);
+            Destroy(foodObject);
+        }
     }
 
     public void ClearFoods()
     {
-        // Deleta os objetos de trás para frente para evitar erros de índice
         for (int i = foods.Count - 1; i >= 0; i--)
         {
-            if (foods[i] != null)
-            {
-                Destroy(foods[i].gameObject);
-            }
+            if (foods[i] != null) Destroy(foods[i]);
         }
         foods.Clear();
     }
