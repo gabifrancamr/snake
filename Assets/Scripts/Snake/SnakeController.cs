@@ -3,14 +3,13 @@ using UnityEngine;
 
 public class SnakeController : MonoBehaviour
 {
+    public WallGenerator wallGenerator;
     public UIManager uiManager;
     public FoodSpawner foodSpawner;
 
     public Transform bodyPrefab;
-    public Transform wallPrefab;
 
     List<Transform> body = new List<Transform>();
-    List<Transform> wall = new List<Transform>();
 
     Vector2 direction = Vector3.up;
     public float cellSize = 0.3f;
@@ -28,7 +27,7 @@ public class SnakeController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        CreateWalls();
+        wallGenerator.CreateWalls();
 
         foodSpawner.SpawnInitialFood();
 
@@ -54,7 +53,7 @@ public class SnakeController : MonoBehaviour
 
         EatFood();
 
-        CheckWallCollioson();
+        CheckWallCollision();
         CheckBodyCollision();
     }
 
@@ -134,39 +133,18 @@ public class SnakeController : MonoBehaviour
         }
     }
 
-    void CreateWalls()
+    void CheckWallCollision()
     {
-        //baseado no tamanho da tela
-        int cellX = -24;
-        int cellY = 11;
-        int height = 25;
+        List<Transform> walls = wallGenerator.GetWalls();
 
-        float horizontal = cellX * cellSize;
-        float vertical = cellY * cellSize;
-
-        for (int i = 0; i < (int)Mathf.Abs((horizontal * 2) / cellSize) + 1; ++i)
+        for (int i = 0; i < walls.Count; ++i)
         {
-            Vector2 top = new Vector3(horizontal + cellSize * i, vertical);
-            Vector2 bottom = new Vector3(horizontal + cellSize * i, vertical - height * cellSize);
-            wall.Add(Instantiate(wallPrefab, top, Quaternion.identity).transform);
-            wall.Add(Instantiate(wallPrefab, bottom, Quaternion.identity).transform);
-        }
+            Vector2 index = walls[i].position / cellSize;
 
-        for (int i = 0; i < height; ++i)
-        {
-            Vector2 right = new Vector3(horizontal, vertical - cellSize * i);
-            Vector2 left = new Vector3(-horizontal, vertical - cellSize * i);
-            wall.Add(Instantiate(wallPrefab, right, Quaternion.identity).transform);
-            wall.Add(Instantiate(wallPrefab, left, Quaternion.identity).transform);
-        }
-    }
-
-    void CheckWallCollioson()
-    {
-        for (int i = 0; i < wall.Count; ++i)
-        {
-            Vector2 index = wall[i].position / cellSize;
-            if (Mathf.Abs(index.x - snakeIndex.x) < 0.00001f && Mathf.Abs(index.y - snakeIndex.y) < 0.00001f)
+            if (
+                Mathf.Abs(index.x - snakeIndex.x) < 0.00001f &&
+                Mathf.Abs(index.y - snakeIndex.y) < 0.00001f
+            )
             {
                 GameOver();
                 break;
