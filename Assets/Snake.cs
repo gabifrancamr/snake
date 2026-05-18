@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Snake : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Snake : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI highScoreText;
     public TextMeshProUGUI gameOverText;
+
+    public GameObject restartButton;
 
     List<Transform> food = new List<Transform>();
     List<Transform> body = new List<Transform>();
@@ -38,6 +41,8 @@ public class Snake : MonoBehaviour
         for (int i = 0; i < initialFoods; i++) SpawnFood();
         initialSpeed = speed;
 
+        gameOverText.enabled = false;
+        restartButton.SetActive(false);
         scoreText.text = "SCORE: 0";
         highScoreText.text = "HIGH SCORE: 0";
     }
@@ -203,6 +208,7 @@ public class Snake : MonoBehaviour
         gameOver = true;
 
         gameOverText.enabled = true;
+        restartButton.SetActive(true);
 
         if (score > highScore)
         {
@@ -212,11 +218,12 @@ public class Snake : MonoBehaviour
         highScoreText.text = "HIGH SCORE: " + highScore;
     }
 
-    void Restart()
+    public void Restart()
     {
         gameOver = false;
 
         gameOverText.enabled = false;
+        restartButton.SetActive(false);
 
         speed = initialSpeed;
 
