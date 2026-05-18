@@ -44,11 +44,14 @@ public class FoodSpawner : MonoBehaviour
 
     public void ClearFoods()
     {
-        for (int i = 0; i < foods.Count; i++)
+        // Deleta os objetos de trás para frente para evitar erros de índice
+        for (int i = foods.Count - 1; i >= 0; i--)
         {
-            Destroy(foods[i].gameObject);
+            if (foods[i] != null)
+            {
+                Destroy(foods[i].gameObject);
+            }
         }
-
         foods.Clear();
     }
 }

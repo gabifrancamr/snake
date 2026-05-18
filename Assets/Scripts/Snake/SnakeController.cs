@@ -4,7 +4,6 @@ using UnityEngine;
 public class SnakeController : MonoBehaviour
 {
     public WallGenerator wallGenerator;
-    public UIManager uiManager;
     public FoodSpawner foodSpawner;
     public GameManager gameManager;
 
@@ -23,6 +22,10 @@ public class SnakeController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Garante que os spawners usem exatamente o mesmo cellSize da cobra
+        if (wallGenerator != null) wallGenerator.cellSize = this.cellSize;
+        if (foodSpawner != null) foodSpawner.cellSize = this.cellSize;
+
         wallGenerator.CreateWalls();
 
         foodSpawner.SpawnInitialFood();
@@ -111,6 +114,8 @@ public class SnakeController : MonoBehaviour
 
         for (int i = 0; i < foods.Count; ++i)
         {
+            if (foods[i] == null) continue; // Proteção contra referências nulas
+
             Vector2 foodIndex = foods[i].position / cellSize;
             if (Mathf.Abs(foodIndex.x - snakeIndex.x) < 0.00001f && Mathf.Abs(foodIndex.y - snakeIndex.y) < 0.00001f)
             {
@@ -118,11 +123,8 @@ public class SnakeController : MonoBehaviour
                 GrowBody();
 
                 speed += 0.5f;
-
                 gameManager.AddScore();
-
                 foodSpawner.SpawnFood();
-
                 break;
             }
         }
