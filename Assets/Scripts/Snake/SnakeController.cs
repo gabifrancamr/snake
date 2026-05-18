@@ -4,12 +4,11 @@ using UnityEngine;
 public class SnakeController : MonoBehaviour
 {
     public UIManager uiManager;
+    public FoodSpawner foodSpawner;
 
-    public Transform foodPrefab;
     public Transform bodyPrefab;
     public Transform wallPrefab;
 
-    List<Transform> food = new List<Transform>();
     List<Transform> body = new List<Transform>();
     List<Transform> wall = new List<Transform>();
 
@@ -17,8 +16,6 @@ public class SnakeController : MonoBehaviour
     public float cellSize = 0.3f;
     public float speed = 5.0f; //Cells per second
     float initialSpeed;
-
-    public int initialFoods = 1;
 
     float moveTime = 0;
     Vector2 snakeIndex;
@@ -32,7 +29,9 @@ public class SnakeController : MonoBehaviour
     void Start()
     {
         CreateWalls();
-        for (int i = 0; i < initialFoods; i++) SpawnFood();
+
+        foodSpawner.SpawnInitialFood();
+
         initialSpeed = speed;
 
         uiManager.UpdateScore(0);
@@ -113,13 +112,14 @@ public class SnakeController : MonoBehaviour
 
     void EatFood()
     {
-        for (int i = 0; i < food.Count; ++i)
+        List<Transform> foods = foodSpawner.GetFoods();
+
+        for (int i = 0; i < foods.Count; ++i)
         {
-            Vector2 foodIndex = food[i].position / cellSize;
+            Vector2 foodIndex = foods[i].position / cellSize;
             if (Mathf.Abs(foodIndex.x - snakeIndex.x) < 0.00001f && Mathf.Abs(foodIndex.y - snakeIndex.y) < 0.00001f)
             {
-                Destroy(food[i].gameObject);
-                food.RemoveAt(i);
+                foodSpawner.RemoveFood(i);
                 GrowBody();
 
                 score++;
@@ -127,19 +127,11 @@ public class SnakeController : MonoBehaviour
 
                 uiManager.UpdateScore(score);
 
-                SpawnFood();
+                foodSpawner.SpawnFood();
 
                 break;
             }
         }
-    }
-
-    void SpawnFood()
-    {
-        float x = Random.Range(-23, 23) * cellSize;
-        float y = Random.Range(-13, 11) * cellSize;
-        Vector2 randomPosition = new Vector2(x, y);
-        food.Add(Instantiate(foodPrefab, randomPosition, Quaternion.identity).transform);
     }
 
     void CreateWalls()
@@ -230,20 +222,13 @@ public class SnakeController : MonoBehaviour
         body.Clear();
 
         // Remove comidas
-        for (int i = 0; i < food.Count; ++i)
-        {
-            Destroy(food[i].gameObject);
-        }
-        food.Clear();
+        foodSpawner.ClearFoods();
 
         // Reset posição e direção
         transform.position = Vector3.zero;
 
         direction = Vector2.up;
 
-        for (int i = 0; i < initialFoods; i++)
-        {
-            SpawnFood();
-        }
+        foodSpawner.SpawnInitialFood();
     }
 }
