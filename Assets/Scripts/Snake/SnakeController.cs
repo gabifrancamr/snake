@@ -6,6 +6,7 @@ public class SnakeController : MonoBehaviour
     public WallGenerator wallGenerator;
     public UIManager uiManager;
     public FoodSpawner foodSpawner;
+    public GameManager gameManager;
 
     public Transform bodyPrefab;
 
@@ -19,11 +20,6 @@ public class SnakeController : MonoBehaviour
     float moveTime = 0;
     Vector2 snakeIndex;
 
-    bool gameOver = false;
-
-    int score = 0;
-    int highScore = 0;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,18 +28,18 @@ public class SnakeController : MonoBehaviour
         foodSpawner.SpawnInitialFood();
 
         initialSpeed = speed;
-
-        uiManager.UpdateScore(0);
-        uiManager.UpdateHighScore(highScore);
-        uiManager.HideGameOver();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gameOver)
+        if (gameManager.IsGameOver())
         {
-            if (Input.GetKeyDown(KeyCode.R)) Restart();
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                gameManager.RestartGame();
+            }
+
             return;
         }
 
@@ -121,10 +117,9 @@ public class SnakeController : MonoBehaviour
                 foodSpawner.RemoveFood(i);
                 GrowBody();
 
-                score++;
                 speed += 0.5f;
 
-                uiManager.UpdateScore(score);
+                gameManager.AddScore();
 
                 foodSpawner.SpawnFood();
 
@@ -146,7 +141,7 @@ public class SnakeController : MonoBehaviour
                 Mathf.Abs(index.y - snakeIndex.y) < 0.00001f
             )
             {
-                GameOver();
+                gameManager.GameOver();
                 break;
             }
         }
@@ -161,52 +156,25 @@ public class SnakeController : MonoBehaviour
             Vector2 index = body[i].position / cellSize;
             if (Mathf.Abs(index.x - snakeIndex.x) < 0.00001f && Mathf.Abs(index.y - snakeIndex.y) < 0.00001f)
             {
-                GameOver();
+                gameManager.GameOver();
                 break;
             }
         }
     }
 
-    void GameOver()
+    public void ResetSnake()
     {
-        gameOver = true;
-
-        uiManager.ShowGameOver();
-
-        if (score > highScore)
-        {
-            highScore = score;
-        }
-
-        uiManager.UpdateHighScore(highScore);
-    }
-
-    public void Restart()
-    {
-        gameOver = false;
-
-        uiManager.HideGameOver();
-
         speed = initialSpeed;
 
-        score = 0;
-        uiManager.UpdateScore(0);
-
-        // Remove corpo
         for (int i = 0; i < body.Count; ++i)
         {
             Destroy(body[i].gameObject);
         }
+
         body.Clear();
 
-        // Remove comidas
-        foodSpawner.ClearFoods();
-
-        // Reset posição e direção
         transform.position = Vector3.zero;
 
         direction = Vector2.up;
-
-        foodSpawner.SpawnInitialFood();
     }
 }
