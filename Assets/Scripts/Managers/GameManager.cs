@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour
 
         uiManager.UpdateScore(score);
         foodSpawner.SpawnFood(cellSize);
+
+        AudioManager.Instance.PlayFoodSound();
     }
 
     public void GameOver()
@@ -63,6 +65,8 @@ public class GameManager : MonoBehaviour
 
         if (score > highScore) highScore = score;
         uiManager.UpdateHighScore(highScore);
+
+        AudioManager.Instance.PlayGameOverSound();
     }
 
     public void RestartGame()

@@ -7,7 +7,7 @@ public class SnakeController : MonoBehaviour
     private List<Transform> body = new List<Transform>();
 
     private Vector2 direction = Vector2.up;
-    private float moveTime = 0;
+    private float nextMoveTime = 0;
 
     void Update()
     {
@@ -21,15 +21,44 @@ public class SnakeController : MonoBehaviour
     {
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        if (input.y == 1 && direction != Vector2.down) direction = Vector2.up;
-        else if (input.y == -1 && direction != Vector2.up) direction = Vector2.down;
-        else if (input.x == -1 && direction != Vector2.right) direction = Vector2.left;
-        else if (input.x == 1 && direction != Vector2.left) direction = Vector2.right;
+        if (input.y == 1 && direction != Vector2.down)
+        {
+            // SÓ TOCA SE A COBRA NÃO ESTIVER INDO PARA CIMA AINDA
+            if (direction != Vector2.up)
+            {
+                direction = Vector2.up;
+                AudioManager.Instance.PlayMoveSound();
+            }
+        }
+        else if (input.y == -1 && direction != Vector2.up)
+        {
+            if (direction != Vector2.down)
+            {
+                direction = Vector2.down;
+                AudioManager.Instance.PlayMoveSound();
+            }
+        }
+        else if (input.x == -1 && direction != Vector2.right)
+        {
+            if (direction != Vector2.left)
+            {
+                direction = Vector2.left;
+                AudioManager.Instance.PlayMoveSound();
+            }
+        }
+        else if (input.x == 1 && direction != Vector2.left)
+        {
+            if (direction != Vector2.right)
+            {
+                direction = Vector2.right;
+                AudioManager.Instance.PlayMoveSound();
+            }
+        }
     }
 
     void Move()
     {
-        if (Time.time > moveTime)
+        if (Time.time > nextMoveTime)
         {
             float cellSize = GameManager.Instance.cellSize;
             float speed = GameManager.Instance.currentSpeed;
@@ -46,7 +75,7 @@ public class SnakeController : MonoBehaviour
             }
 
             transform.position += (Vector3)direction * cellSize;
-            moveTime = Time.time + 1f / speed;
+            nextMoveTime = Time.time + 1f / speed;
         }
     }
 
@@ -95,6 +124,6 @@ public class SnakeController : MonoBehaviour
 
         transform.position = Vector3.zero;
         direction = Vector2.up;
-        moveTime = 0;
+        nextMoveTime = 0;
     }
 }
