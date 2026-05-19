@@ -1,443 +1,348 @@
-Documentação do Projeto — Jogo Snake em Unity
-Nome do Projeto
-Snake Unity
-Visão Geral do Projeto
-O projeto consiste no desenvolvimento de um jogo digital inspirado no clássico Snake, utilizando a engine Unity e programação em C#.
+# 🐍 Snake Unity
+
+## 📖 Visão Geral do Projeto
+
+O projeto consiste no desenvolvimento de um jogo digital inspirado no clássico **Snake**, utilizando a engine Unity e programação em **C#**.
+
 O objetivo principal do projeto é criar um jogo simples, funcional e didático, permitindo a análise completa de sua estrutura, funcionamento e código-fonte para fins acadêmicos.
-O jogo terá foco em:
 
-simplicidade;
-organização de código;
-clareza de funcionamento;
-fácil entendimento da lógica;
-fácil explicação técnica.
+### 🎯 Foco do Projeto
 
+- Simplicidade
+- Organização de código
+- Clareza de funcionamento
+- Fácil entendimento da lógica
+- Fácil explicação técnica
 
-Objetivo do Jogo
+---
+
+# 🎮 Objetivo do Jogo
+
 O jogador controlará uma cobra em um cenário 2D. O objetivo será:
 
-coletar alimentos espalhados pelo mapa;
-aumentar o tamanho da cobra;
-aumentar a pontuação;
-evitar colisões com o próprio corpo e com as paredes.
+- Coletar alimentos espalhados pelo mapa
+- Aumentar o tamanho da cobra
+- Aumentar a pontuação
+- Evitar colisões com o próprio corpo e com as paredes
 
-O jogo continuará até ocorrer uma colisão que resulte em Game Over.
+O jogo continuará até ocorrer uma colisão que resulte em **Game Over**.
 
-Estrutura Geral do Projeto
-O jogo será dividido em duas cenas principais:
-1. Cena de Menu Inicial
+---
+
+# 🧩 Estrutura Geral do Projeto
+
+O jogo será dividido em duas cenas principais.
+
+---
+
+## 1️⃣ Cena de Menu Inicial
+
 Responsável por:
 
-exibir o título do jogo;
-permitir iniciar o jogo;
-permitir fechar o jogo.
+- Exibir o título do jogo
+- Permitir iniciar o jogo
+- Permitir fechar o jogo
 
-Elementos do Menu
+### Elementos do Menu
 
-Título "Snake"
-Botão "Play"
-Botão "Quit"
+- Título **"Snake"**
+- Botão **"Play"**
+- Botão **"Quit"**
 
-2. Cena Principal do Jogo
+---
+
+## 2️⃣ Cena Principal do Jogo
+
 Responsável por:
 
-gameplay;
-movimentação;
-geração de comida;
-controle de pontuação;
-detecção de colisões;
-tela de Game Over.
+- Gameplay
+- Movimentação
+- Geração de comida
+- Controle de pontuação
+- Detecção de colisões
+- Tela de Game Over
 
-Mecânicas Principais
-Sistema de Movimentação
+---
+
+# ⚙️ Mecânicas Principais
+
+## 🐍 Sistema de Movimentação
+
 A cobra será controlada pelo jogador através do teclado.
-Controles
 
-Setas direcionais
-Botões (W, A, S, D)
+### 🎮 Controles
 
-Funcionamento
-A movimentação ocorrerá em grade (grid), onde a cobra se moverá em intervalos fixos. A cobra poderá:
+- Setas direcionais
+- Teclas **W, A, S, D**
 
-mover para cima;
-mover para baixo;
-mover para esquerda;
-mover para direita.
+### Funcionamento
 
-Não será permitido realizar curva instantânea para a direção oposta. Exemplo: se estiver indo para direita, não poderá virar imediatamente para esquerda.
-Sistema de Crescimento
+A movimentação ocorrerá em grade (**grid**), onde a cobra se moverá em intervalos fixos.
+
+A cobra poderá:
+
+- Mover para cima
+- Mover para baixo
+- Mover para esquerda
+- Mover para direita
+
+> Não será permitido realizar curva instantânea para a direção oposta.  
+> Exemplo: se estiver indo para direita, não poderá virar imediatamente para esquerda.
+
+---
+
+## 📈 Sistema de Crescimento
+
 Ao coletar uma comida:
 
-a cobra aumentará de tamanho;
-um novo segmento será adicionado ao corpo;
-a pontuação aumentará.
+- A cobra aumentará de tamanho
+- Um novo segmento será adicionado ao corpo
+- A pontuação aumentará
 
-Sistema de Pontuação
-Cada comida coletada adicionará pontos ao jogador. A pontuação será exibida na interface do jogo em tempo real.
-Sistema de Colisão
+---
+
+## 🏆 Sistema de Pontuação
+
+Cada comida coletada adicionará pontos ao jogador.
+
+A pontuação será exibida na interface do jogo em tempo real.
+
+---
+
+## 💥 Sistema de Colisão
+
 O jogo possuirá colisão com:
-Paredes
+
+### 🧱 Paredes
+
 Ao colidir com as bordas do mapa, o jogo terminará.
-Corpo da Cobra
-Ao colidir com o próprio corpo, ocorrerá Game Over.
-Comida
+
+### 🐍 Corpo da Cobra
+
+Ao colidir com o próprio corpo, ocorrerá **Game Over**.
+
+### 🍎 Comida
+
 Ao tocar na comida:
 
-a comida será destruída;
-uma nova comida será gerada em posição aleatória;
-a cobra crescerá;
-a pontuação aumentará.
+- A comida será destruída
+- Uma nova comida será gerada em posição aleatória
+- A cobra crescerá
+- A pontuação aumentará
 
-Sistema de Spawn de Comida
+---
+
+## 🍏 Sistema de Spawn de Comida
+
 A comida será gerada:
 
-aleatoriamente;
-dentro dos limites do mapa;
-em posições válidas do grid.
+- Aleatoriamente
+- Dentro dos limites do mapa
+- Em posições válidas do grid
 
 O sistema evitará gerar comida fora do cenário.
 
-Interface do Usuário (UI)
-Durante o Jogo
+---
+
+# 🖥️ Interface do Usuário (UI)
+
+## 🎮 Durante o Jogo
+
 A interface exibirá:
 
-pontuação atual;
-mensagens básicas.
+- Pontuação atual
+- Mensagens básicas
 
-Tela de Game Over
+---
+
+## ☠️ Tela de Game Over
+
 Ao perder:
 
-será exibida mensagem "Game Over";
-será exibida pontuação final;
-será exibido botão de reiniciar.
-será exibido o botão de fechar.
+- Será exibida mensagem **"Game Over"**
+- Será exibida pontuação final
+- Será exibido botão de reiniciar
+- Será exibido botão de fechar
 
+---
 
-Sistema de Áudio
+# 🔊 Sistema de Áudio
+
 O projeto utilizará apenas efeitos sonoros simples.
-Sons previstos
 
-som ao clicar em botões;
-som ao coletar comida.
-Ao perder o jogo.
+### 🔉 Sons previstos
 
-Estrutura Visual
-Estilo Artístico
-O jogo utilizará visual minimalista 2D. Características:
+- Som ao clicar em botões
+- Som ao coletar comida
+- Som ao perder o jogo
 
-formas simples;
-cores sólidas;
-interface limpa;
-cenário simples;
-foco na jogabilidade.
+---
 
-Cenário
+# 🎨 Estrutura Visual
+
+## 🖌️ Estilo Artístico
+
+O jogo utilizará visual minimalista 2D.
+
+### Características
+
+- Formas simples
+- Cores sólidas
+- Interface limpa
+- Cenário simples
+- Foco na jogabilidade
+
+---
+
+## 🌍 Cenário
+
 O cenário será composto por:
 
-fundo simples;
-área delimitada para movimentação da cobra;
+- Fundo simples
+- Área delimitada para movimentação da cobra
 
-Personagens
-Cobra
-A cobra será o personagem controlado pelo jogador. Características:
+---
 
-crescimento progressivo;
-movimentação contínua;
-colisão com objetos;
-controle pelo teclado.
+# 👤 Personagens
 
+## 🐍 Cobra
 
-Objetos do Jogo
-Comida
+A cobra será o personagem controlado pelo jogador.
+
+### Características
+
+- Crescimento progressivo
+- Movimentação contínua
+- Colisão com objetos
+- Controle pelo teclado
+
+---
+
+# 🧱 Objetos do Jogo
+
+## 🍎 Comida
+
 Objeto coletável responsável por aumentar o tamanho da cobra e a pontuação.
-Paredes
+
+---
+
+## 🧱 Paredes
+
 Objetos responsáveis por limitar o mapa e detectar colisão de derrota.
 
-Organização Técnica do Projeto
-Estrutura de Pastas
+---
 
-Scenes — cenas do jogo (Menu e Principal)
-Scripts — todos os scripts C# do projeto
-Prefabs — objetos pré-configurados (cobra, comida, paredes)
-Audio — arquivos de efeitos sonoros
-UI — assets visuais de interface (fontes, sprites de botão, ícones)
+# 🗂️ Organização Técnica do Projeto
 
+## 📁 Estrutura de Pastas
 
-Documentação do Projeto — Jogo Snake em Unity
-Nome do Projeto
-Snake Unity
-Visão Geral do Projeto
-O projeto consiste no desenvolvimento de um jogo digital inspirado no clássico Snake, utilizando a engine Unity e programação em C#.
-O objetivo principal do projeto é criar um jogo simples, funcional e didático, permitindo a análise completa de sua estrutura, funcionamento e código-fonte para fins acadêmicos.
-O jogo terá foco em:
+```bash
+Assets/
+│
+├── Scenes/       # Cenas do jogo
+├── Scripts/      # Scripts C#
+├── Prefabs/      # Objetos pré-configurados
+├── Audio/        # Efeitos sonoros
+└── UI/           # Assets visuais da interface
+```
 
-simplicidade;
-organização de código;
-clareza de funcionamento;
-fácil entendimento da lógica;
-fácil explicação técnica.
+---
 
+# 📜 Scripts Principais
 
-Objetivo do Jogo
-O jogador controlará uma cobra em um cenário 2D. O objetivo será:
+## 🐍 SnakeController.cs
 
-coletar alimentos espalhados pelo mapa;
-aumentar o tamanho da cobra;
-aumentar a pontuação;
-evitar colisões com o próprio corpo e com as paredes.
-
-O jogo continuará até ocorrer uma colisão que resulte em Game Over.
-
-Estrutura Geral do Projeto
-O jogo será dividido em duas cenas principais:
-1. Cena de Menu Inicial
 Responsável por:
 
-exibir o título do jogo;
-permitir iniciar o jogo;
-permitir fechar o jogo.
+- Movimentação da cobra e leitura do teclado
+- Controle e crescimento dos segmentos do corpo
+- Detectar colisões com comida, parede e corpo
 
-Elementos do Menu
+---
 
-Título "Snake"
-Botão "Play"
-Botão "Quit"
+## 🍎 FoodSpawner.cs
 
-2. Cena Principal do Jogo
 Responsável por:
 
-gameplay;
-movimentação;
-geração de comida;
-controle de pontuação;
-detecção de colisões;
-tela de Game Over.
+- Geração da comida
+- Posicionamento aleatório dentro do grid
+- Controle de spawn a cada coleta
 
-Mecânicas Principais
-Sistema de Movimentação
-A cobra será controlada pelo jogador através do teclado.
-Controles
+---
 
-Setas direcionais
-Botões (W, A, S, D)
+## 🎮 GameManager.cs
 
-Funcionamento
-A movimentação ocorrerá em grade (grid), onde a cobra se moverá em intervalos fixos. A cobra poderá:
-
-mover para cima;
-mover para baixo;
-mover para esquerda;
-mover para direita.
-
-Não será permitido realizar curva instantânea para a direção oposta. Exemplo: se estiver indo para direita, não poderá virar imediatamente para esquerda.
-Sistema de Crescimento
-Ao coletar uma comida:
-
-a cobra aumentará de tamanho;
-um novo segmento será adicionado ao corpo;
-a pontuação aumentará.
-
-Sistema de Pontuação
-Cada comida coletada adicionará pontos ao jogador. A pontuação será exibida na interface do jogo em tempo real.
-Sistema de Colisão
-O jogo possuirá colisão com:
-Paredes
-Ao colidir com as bordas do mapa, o jogo terminará.
-Corpo da Cobra
-Ao colidir com o próprio corpo, ocorrerá Game Over.
-Comida
-Ao tocar na comida:
-
-a comida será destruída;
-uma nova comida será gerada em posição aleatória;
-a cobra crescerá;
-a pontuação aumentará.
-
-Sistema de Spawn de Comida
-A comida será gerada:
-
-aleatoriamente;
-dentro dos limites do mapa;
-em posições válidas do grid.
-
-O sistema evitará gerar comida fora do cenário.
-
-Interface do Usuário (UI)
-Durante o Jogo
-A interface exibirá:
-
-pontuação atual;
-mensagens básicas.
-
-Tela de Game Over
-Ao perder:
-
-será exibida mensagem "Game Over";
-será exibida pontuação final;
-será exibido botão de reiniciar.
-será exibido o botão de fechar.
-
-
-Sistema de Áudio
-O projeto utilizará apenas efeitos sonoros simples.
-Sons previstos
-
-som ao clicar em botões;
-som ao coletar comida.
-Ao perder o jogo.
-
-Estrutura Visual
-Estilo Artístico
-O jogo utilizará visual minimalista 2D. Características:
-
-formas simples;
-cores sólidas;
-interface limpa;
-cenário simples;
-foco na jogabilidade.
-
-Cenário
-O cenário será composto por:
-
-fundo simples;
-área delimitada para movimentação da cobra;
-
-Personagens
-Cobra
-A cobra será o personagem controlado pelo jogador. Características:
-
-crescimento progressivo;
-movimentação contínua;
-colisão com objetos;
-controle pelo teclado.
-
-
-Objetos do Jogo
-Comida
-Objeto coletável responsável por aumentar o tamanho da cobra e a pontuação.
-Paredes
-Objetos responsáveis por limitar o mapa e detectar colisão de derrota.
-
-Organização Técnica do Projeto
-Estrutura de Pastas
-
-Scenes — cenas do jogo (Menu e Principal)
-Scripts — todos os scripts C# do projeto
-Prefabs — objetos pré-configurados (cobra, comida, paredes)
-Audio — arquivos de efeitos sonoros
-UI — assets visuais de interface (fontes, sprites de botão, ícones)
-
-
-Scripts Principais
-SnakeController.cs
 Responsável por:
 
-movimentação da cobra e leitura do teclado;
+- Controle do estado geral do jogo e velocidade
+- Gerenciamento da pontuação (**Score** e **High Score**)
+- Acionamento do Game Over e reinício da partida
 
-controle e crescimento dos segmentos do corpo;
+---
 
-detectar colisões com a comida, parede e corpo (usando Triggers).
+## 🖥️ UIManager.cs
 
-FoodSpawner.cs
 Responsável por:
 
-geração da comida;
+- Atualização da pontuação em tempo real
+- Exibição e ocultação do painel de Game Over
 
-posicionamento aleatório dentro do grid;
+---
 
-controle de spawn a cada coleta.
+## 🔊 AudioManager.cs
 
-GameManager.cs
 Responsável por:
 
-controle do estado geral do jogo e velocidade;
+- Centralizar e reproduzir os efeitos sonoros
+- Som ao coletar comida
+- Som ao mudar de direção
+- Som no Game Over
 
-gerenciamento da pontuação (Score e High Score);
+---
 
-acionamento do Game Over e reinício da partida.
+## 📋 MenuController.cs
 
-UIManager.cs
 Responsável por:
 
-atualização da pontuação em tempo real na tela;
+- Lógica dos botões da interface
+- Carregar a cena principal ao clicar em **"Jogar"**
+- Encerrar o jogo ao clicar em **"Sair"**
 
-exibição e ocultação do painel completo de Game Over (com os botões).
+---
 
-AudioManager.cs
-Responsável por:
+# 🔄 Fluxo Geral de Funcionamento
 
-centralizar e reproduzir os efeitos sonoros do jogo;
+```text
+Menu Inicial
+     ↓
+Início do Jogo
+     ↓
+Cobra começa a se mover
+     ↓
+Jogador controla direção
+     ↓
+Comida é gerada
+     ↓
+Comida coletada
+     ↓
++ Score
++ Crescimento
++ Nova comida
+     ↓
+Colisão
+     ↓
+Game Over
+     ↓
+Opção de Reiniciar
+```
 
-som ao coletar comida, ao mudar de direção e no Game Over.
+---
 
-MenuController.cs
-Responsável por:
+# 🛠️ Tecnologias Utilizadas
 
-lógica dos botões de interface;
+- Engine: Unity
+- Linguagem: C#
+- Desenvolvimento 2D
+- Sistema de UI da Unity
 
-carregar a cena principal ao clicar em "Jogar";
-
-encerrar o jogo ao clicar em "Sair" (no menu e no Game Over).
-
-
-Fluxo Geral de Funcionamento
-
-O jogador inicia o jogo pelo menu;
-A cena principal é carregada;
-A cobra começa a se mover;
-O jogador controla a direção;
-A comida é gerada;
-Ao coletar comida:
-
-score aumenta;
-cobra cresce;
-nova comida aparece;
-
-
-O jogo continua até colisão;
-Ao colidir:
-
-ocorre Game Over;
-aparece opção de reiniciar.
-
-
-
-
-Tecnologias Utilizadas
-
-Engine: Unity
-Linguagem: C#
-Desenvolvimento 2D
-Sistema de UI do Unity
-
-
-
-Fluxo Geral de Funcionamento
-
-O jogador inicia o jogo pelo menu;
-A cena principal é carregada;
-A cobra começa a se mover;
-O jogador controla a direção;
-A comida é gerada;
-Ao coletar comida:
-
-score aumenta;
-cobra cresce;
-nova comida aparece;
-
-
-O jogo continua até colisão;
-Ao colidir:
-
-ocorre Game Over;
-aparece opção de reiniciar.
-
-
-
-
-Tecnologias Utilizadas
-
-Engine: Unity
-Linguagem: C#
-Desenvolvimento 2D
-Sistema de UI do Unity
+---
