@@ -35,8 +35,8 @@ permitir fechar o jogo.
 Elementos do Menu
 
 Título "Snake"
-Botão "Jogar"
-Botão "Sair"
+Botão "Play"
+Botão "Quit"
 
 2. Cena Principal do Jogo
 Responsável por:
@@ -48,13 +48,13 @@ controle de pontuação;
 detecção de colisões;
 tela de Game Over.
 
-
 Mecânicas Principais
 Sistema de Movimentação
 A cobra será controlada pelo jogador através do teclado.
 Controles
 
 Setas direcionais
+Botões (W, A, S, D)
 
 Funcionamento
 A movimentação ocorrerá em grade (grid), onde a cobra se moverá em intervalos fixos. A cobra poderá:
@@ -110,6 +110,7 @@ Ao perder:
 será exibida mensagem "Game Over";
 será exibida pontuação final;
 será exibido botão de reiniciar.
+será exibido o botão de fechar.
 
 
 Sistema de Áudio
@@ -118,8 +119,7 @@ Sons previstos
 
 som ao clicar em botões;
 som ao coletar comida.
-
-Não haverá música de fundo complexa nem sistema avançado de áudio.
+Ao perder o jogo.
 
 Estrutura Visual
 Estilo Artístico
@@ -136,8 +136,6 @@ O cenário será composto por:
 
 fundo simples;
 área delimitada para movimentação da cobra;
-grid invisível ou visual discreto.
-
 
 Personagens
 Cobra
@@ -161,12 +159,8 @@ Estrutura de Pastas
 Scenes — cenas do jogo (Menu e Principal)
 Scripts — todos os scripts C# do projeto
 Prefabs — objetos pré-configurados (cobra, comida, paredes)
-Sprites — imagens e elementos visuais 2D
 Audio — arquivos de efeitos sonoros
 UI — assets visuais de interface (fontes, sprites de botão, ícones)
-
-
-Observação: os scripts de interface ficam dentro da pasta Scripts, não da pasta UI. A pasta UI é exclusiva para assets visuais.
 
 
 Scripts Principais
