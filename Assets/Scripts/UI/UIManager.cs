@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Texts")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI highScoreText;
-    public TextMeshProUGUI gameOverText;
 
-    public GameObject restartButton;
+    [Header("GameOver Panel")]
+    // Substituímos os elementos soltos pelo painel PAI que engloba tudo
+    public GameObject gameOverPanel;
 
     public void UpdateScore(int score)
     {
@@ -21,13 +23,13 @@ public class UIManager : MonoBehaviour
 
     public void ShowGameOver()
     {
-        gameOverText.enabled = true;
-        restartButton.SetActive(true);
+        // Ativa o painel inteiro (o texto, o restart e o quit aparecem juntos)
+        gameOverPanel.SetActive(true);
     }
 
     public void HideGameOver()
     {
-        gameOverText.enabled = false;
-        restartButton.SetActive(false);
+        // Desativa o painel inteiro (tudo o que está dentro dele some da tela)
+        gameOverPanel.SetActive(false);
     }
 }
